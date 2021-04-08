@@ -3,7 +3,7 @@
 
 # # Import csv function
 
-# In[5]:
+# In[3]:
 
 
 def python_csv(csv_file):
@@ -22,7 +22,7 @@ def python_csv(csv_file):
 
 # ### Calculate sample rate function
 
-# In[6]:
+# In[4]:
 
 
 def calculate_sample_rate(time): # Time is output t from python_csv()
@@ -31,25 +31,25 @@ def calculate_sample_rate(time): # Time is output t from python_csv()
     return sample_rate
 
 
-# In[358]:
+# In[5]:
 
 
 calculate_sample_rate(python_csv('sigA.csv')[1])
 
 
-# In[361]:
+# In[6]:
 
 
 calculate_sample_rate(python_csv('sigB.csv')[1])
 
 
-# In[362]:
+# In[7]:
 
 
 calculate_sample_rate(python_csv('sigC.csv')[1])
 
 
-# In[363]:
+# In[8]:
 
 
 calculate_sample_rate(python_csv('sigD.csv')[1])
@@ -57,7 +57,7 @@ calculate_sample_rate(python_csv('sigD.csv')[1])
 
 # # 4. FFT function
 
-# In[7]:
+# In[9]:
 
 
 def FFT2(s,t): # s = data list, t = time list
@@ -84,7 +84,7 @@ def FFT2(s,t): # s = data list, t = time list
     plt.show()
 
 
-# In[8]:
+# In[10]:
 
 
 # CSV A
@@ -92,7 +92,7 @@ s,t = python_csv('sigA.csv')
 FFT2(s,t)
 
 
-# In[157]:
+# In[11]:
 
 
 # CSV B
@@ -100,7 +100,7 @@ s,t = python_csv('sigB.csv')
 FFT2(s,t)
 
 
-# In[158]:
+# In[12]:
 
 
 # CSV C
@@ -108,7 +108,7 @@ s,t = python_csv('sigC.csv')
 FFT2(s,t)
 
 
-# In[159]:
+# In[13]:
 
 
 # CSV D
@@ -118,7 +118,7 @@ FFT2(s,t)
 
 # # 5. Moving average filter
 
-# In[9]:
+# In[14]:
 
 
 def MAV(data, time, x):
@@ -133,7 +133,7 @@ def MAV(data, time, x):
     return data_new[x-1:-1], time
 
 
-# In[10]:
+# In[15]:
 
 
 def p5(csv_file,x):
@@ -179,25 +179,25 @@ def p5(csv_file,x):
 
 # ### Function to create plots for problem 5
 
-# In[259]:
+# In[16]:
 
 
 p5('sigA.csv',500)
 
 
-# In[260]:
+# In[17]:
 
 
 p5('sigB.csv',500)
 
 
-# In[294]:
+# In[18]:
 
 
 p5('sigC.csv',200)
 
 
-# In[292]:
+# In[19]:
 
 
 p5('sigD.csv',800)
@@ -205,7 +205,7 @@ p5('sigD.csv',800)
 
 # # 6. IIR Filter
 
-# In[23]:
+# In[20]:
 
 
 def IIR(data, time, A, B):
@@ -218,7 +218,7 @@ def IIR(data, time, A, B):
     return data_new, time
 
 
-# In[24]:
+# In[21]:
 
 
 def p6(csv_file,A,B):
@@ -262,25 +262,25 @@ def p6(csv_file,A,B):
     plt.show()
 
 
-# In[28]:
+# In[22]:
 
 
 p6('sigA.csv',0.999,0.001)
 
 
-# In[30]:
+# In[23]:
 
 
 p6('sigB.csv',0.999,0.001)
 
 
-# In[34]:
+# In[24]:
 
 
 p6('sigC.csv',0.995,0.005)
 
 
-# In[36]:
+# In[25]:
 
 
 p6('sigD.csv',0.999,0.001)
@@ -288,7 +288,7 @@ p6('sigD.csv',0.999,0.001)
 
 # # 7. FIR Filter
 
-# In[132]:
+# In[70]:
 
 
 # Old version that didn't work properly
@@ -306,11 +306,25 @@ def FIR_old(data, time, h):
     return data_new[x-1:-1], time
 
 
-# In[133]:
+# In[71]:
 
 
-# FIXED VERSION
+# Best version using list operations
 def FIR(data, time, h):
+    import numpy as np
+    x = len(h)
+    data_new = np.zeros(len(data))
+    for i in range(x,len(data)-x):
+        for j in range(x):
+            data_new[i] += h[j] * data[i-j]
+    return data_new, time
+
+
+# In[72]:
+
+
+# Fixed version using convolve
+def FIR_convolve(data, time, h):
     import numpy as np
     
 #     data_length = len(data)
@@ -325,7 +339,7 @@ def FIR(data, time, h):
     return data_new, time
 
 
-# In[134]:
+# In[95]:
 
 
 def p7(csv_file,h):
@@ -365,102 +379,64 @@ def p7(csv_file,h):
     ax2.loglog(frq,abs(Y),'r') # plotting the fft
     ax2.set_xlabel('Freq (Hz)')
     ax2.set_ylabel('|Y(freq)|')
-    plt.suptitle(csv_file + ', ' + 'f_l = 20 Hz, b_l = 50 Hz')
+    plt.suptitle(csv_file + ', ' +'Kaiser, '+ 'f_l = 12 Hz, b_l = 28 Hz')
     plt.show()
 
 
-# In[135]:
+# In[90]:
 
 
 h = [
-    -0.000604064461847955,
-    -0.000551780069321844,
-    -0.000507919670677880,
-    -0.000454487696572236,
-    -0.000369375235857037,
-    -0.000227140994277224,
-    0.000000000000000000,
-    0.000341015939334090,
-    0.000824770783395443,
-    0.001478661559683630,
-    0.002327237052419366,
-    0.003390857033446438,
-    0.004684451187085917,
-    0.006216434312797693,
-    0.007987829321982980,
-    0.009991642156324147,
-    0.012212523327184123,
-    0.014626739684373311,
-    0.017202467721139997,
-    0.019900406721944881,
-    0.022674696908148821,
-    0.025474114994420292,
-    0.028243507783721956,
-    0.030925414113290178,
-    0.033461817071338058,
-    0.035795962308429512,
-    0.037874174746726358,
-    0.039647605214021407,
-    0.041073840550354880,
-    0.042118315486222989,
-    0.042755471888911503,
-    0.042969620523712268,
-    0.042755471888911503,
-    0.042118315486222989,
-    0.041073840550354880,
-    0.039647605214021414,
-    0.037874174746726358,
-    0.035795962308429519,
-    0.033461817071338058,
-    0.030925414113290181,
-    0.028243507783721956,
-    0.025474114994420295,
-    0.022674696908148818,
-    0.019900406721944885,
-    0.017202467721140008,
-    0.014626739684373313,
-    0.012212523327184133,
-    0.009991642156324143,
-    0.007987829321982982,
-    0.006216434312797696,
-    0.004684451187085917,
-    0.003390857033446442,
-    0.002327237052419366,
-    0.001478661559683631,
-    0.000824770783395443,
-    0.000341015939334090,
-    0.000000000000000000,
-    -0.000227140994277224,
-    -0.000369375235857037,
-    -0.000454487696572237,
-    -0.000507919670677880,
-    -0.000551780069321844,
-    -0.000604064461847955,
+    0.007649232461003675,
+    0.011785642088230047,
+    0.016849947718565666,
+    0.022729214326209404,
+    0.029236234748848105,
+    0.036117413095518219,
+    0.043067071418621580,
+    0.049747191614344079,
+    0.055811025677837481,
+    0.060928570343499529,
+    0.064811656972160486,
+    0.067236384591329287,
+    0.068060829887664764,
+    0.067236384591329287,
+    0.064811656972160486,
+    0.060928570343499529,
+    0.055811025677837481,
+    0.049747191614344079,
+    0.043067071418621580,
+    0.036117413095518219,
+    0.029236234748848105,
+    0.022729214326209404,
+    0.016849947718565669,
+    0.011785642088230042,
+    0.007649232461003675,
 ]
 
 
-# In[136]:
+# In[96]:
 
 
 # CSV A
 p7('sigA.csv',h)
 
 
-# In[137]:
+# In[97]:
 
 
 # CSV B
 p7('sigB.csv',h)
 
 
-# In[138]:
+# In[98]:
 
 
 # CSV C
 p7('sigC.csv',h)
 
 
-# In[139]:
+# In[99]:
 
 
 # CSV D
