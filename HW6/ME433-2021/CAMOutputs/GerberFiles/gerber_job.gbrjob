@@ -1,0 +1,24 @@
+{
+    "Header": {
+        "Comment": "All values are metric (mm)",
+        "CreationDate": "2021-09-21T05:07:23Z",
+        "GenerationSoftware": {
+            "Application": "EAGLE",
+            "Vendor": "Autodesk",
+            "Version": "9.6.2"
+        },
+        "Part": "Single"
+    },
+    "Overall": {
+        "BoardThickness": 1.57,
+        "LayerNumber": 2,
+        "Name": {
+            "ProjectId": "me433-2021"
+        },
+        "Owner": "Corey Wang <coreywang2023@u.northwestern.edu>",
+        "Size": {
+            "X": 100,
+            "Y": 100
+        }
+    }
+}
