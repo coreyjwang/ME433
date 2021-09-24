@@ -64,13 +64,13 @@ int main() {
         if (PORTBbits.RB4 == 0) { // Always on button
             LATAbits.LATA4 = !LATAbits.LATA4; // Invert output of A
             delay();
-            
+
             LATAbits.LATA4 = !LATAbits.LATA4; // Invert output of A
             delay();
-            
+
             LATAbits.LATA4 = !LATAbits.LATA4; // Invert output of A
             delay();
-            
+
             LATAbits.LATA4 = !LATAbits.LATA4; // Invert output of A
             delay();
         }
