@@ -6,6 +6,7 @@
 #include "ST7789.h"
 #include "spi.h"
 #include "font.h"
+#include "i2c_master_noint.h"
 
 // DEVCFG0
 #pragma config DEBUG = OFF // disable debugging
@@ -38,6 +39,9 @@
 #pragma config PMDL1WAY = OFF // allow multiple reconfigurations
 #pragma config IOL1WAY = OFF // allow multiple reconfigurations
 
+// Write & read addresses for MCP23017
+// Write address: 0100 000 0
+// Read  address: 0100 000 1
 
 char m[15]; // message
 
@@ -68,16 +72,4 @@ int main() {
         sprintf(fps_count, "%d FPS", (int) (_CP0_GET_COUNT() / 480000));
         drawString(180, 32,WHITE,fps_count);
     }
-    
-    // Since characters are 5 x 8, the screen can fit 48 x 30 = 1440 total
-    // Fill screen with fps counter
-    while(1) {
-        _CP0_SET_COUNT(0);
-        LCD_clearScreen(RED);
-        // FPS count
-        char fps_count[10];
-        sprintf(fps_count, "%d FPS", (int) (_CP0_GET_COUNT() / 480000));
-        drawString(180, 32,WHITE,fps_count);
-    }
-    
 }
